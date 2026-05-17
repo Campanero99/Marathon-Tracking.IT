@@ -478,11 +478,11 @@ async function loadMapaCiudad(name){
     toggleBtn.className = 'btn btn-sm btn-outline';
     toggleBtn.style.cssText = 'margin-top:6px;font-size:0.75rem;padding:4px 10px;';
     toggleBtn.dataset.modo = 'mios';
-    toggleBtn.textContent = '👁 ' + (typeof t === 'function' ? t('mapa.verTodos') || 'Ver todos los puntos' : 'Ver todos los puntos');
+    toggleBtn.textContent = '👁 ' + t('mapa.verTodos');
     toggleBtn.onclick = function(){
       if(this.dataset.modo==='mios'){
         this.dataset.modo='todos';
-        this.textContent = '👁 ' + (typeof t === 'function' ? t('mapa.verMios') || 'Ver solo mis puntos' : 'Ver solo mis puntos');
+        this.textContent = '👁 ' + t('mapa.verMios');
         // Redibujar con todos
         mapaLayers.filter(l=>l._icon||l._path===undefined).forEach(l=>{ try{leafletMap.removeLayer(l);}catch(e){} });
         mapaLayers = mapaLayers.filter(l=>l===poly);
@@ -497,7 +497,7 @@ async function loadMapaCiudad(name){
         });}
       } else {
         this.dataset.modo='mios';
-        this.textContent = '👁 ' + (typeof t === 'function' ? t('mapa.verTodos') || 'Ver todos los puntos' : 'Ver todos los puntos');
+        this.textContent = '👁 ' + t('mapa.verTodos');
         // Redibujar solo los mios
         mapaLayers.filter(l=>l._icon||l._path===undefined).forEach(l=>{ try{leafletMap.removeLayer(l);}catch(e){} });
         mapaLayers = mapaLayers.filter(l=>l===poly);
