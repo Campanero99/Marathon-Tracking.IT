@@ -171,6 +171,28 @@
     .pulsera-body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     @page { margin: 10mm; size: A4 portrait; }
   }
+  .pulsera-print-btn {
+    margin-top:10px;
+    width:100%;
+    background:linear-gradient(135deg,#2c3e50,#1a1a2e);
+    border:1.5px solid #d4af37;
+    color:#d4af37;
+    padding:9px;
+    border-radius:50px;
+    font-weight:800;
+    font-size:0.78rem;
+    cursor:pointer;
+    transition:all 0.25s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    letter-spacing:1px;
+  }
+  .pulsera-print-btn:hover {
+    background:#d4af37;
+    color:#1a1a2e;
+  }
 </style>
 </head>
 <body>
@@ -550,10 +572,18 @@ function mostrarPulsera(){
     const time=h>0?h+':'+pad(m)+':'+pad(s):pad(m)+':'+pad(s);
     return '<div class="pulsera-row"><span class="pulsera-km">'+labels[i]+'</span><span class="pulsera-time">'+time+'</span></div>';
   }).join('');
-  var modal=document.getElementById('modal-pulsera');
-  console.log('modal=', modal);
-  modal.classList.add('open');
-  console.log('modal classes=', modal.className);
+  // Botón imprimir
+  var wrap = document.querySelector('#modal-pulsera .pulsera-wrap');
+  var printBtn = wrap.querySelector('.pulsera-print-btn');
+  if(!printBtn){
+    printBtn = document.createElement('button');
+    printBtn.className = 'pulsera-print-btn';
+    wrap.appendChild(printBtn);
+  }
+  printBtn.onclick = imprimirPulsera;
+  printBtn.innerHTML = t('ficha.pulseraPrint');
+
+  document.getElementById('modal-pulsera').classList.add('open');
 }
 function ocultarAviso(){hayaCambios=false;}
 function intentarSalir(destino){
