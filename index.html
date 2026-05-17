@@ -292,7 +292,7 @@ function actualizarIdiomaInterfaz(){
   if(document.getElementById('ficha-ciudad-desc'))document.getElementById('ficha-ciudad-desc').textContent=t('ficha.cityDesc');
   if(document.getElementById('ficha-carrera-label'))document.getElementById('ficha-carrera-label').textContent=t('ficha.race');
   if(document.getElementById('f-carrera'))document.getElementById('f-carrera').placeholder=t('ficha.racePlaceholder');
-  if(document.getElementById('pulsera-titulo'))document.getElementById('pulsera-titulo').textContent=t('ficha.pulseraTitle');
+  var ptEl=document.getElementById('pulsera-titulo');if(ptEl&&!document.getElementById('modal-pulsera').classList.contains('open'))ptEl.textContent=t('ficha.pulseraTitle');
   var tb=document.getElementById('mapa-toggle-puntos');if(tb){var modo=tb.getAttribute('data-modo');tb.textContent='👁 '+t(modo==='mios'?'mapa.verTodos':'mapa.verMios');}
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
   if(document.getElementById('ficha-marca-label'))document.getElementById('ficha-marca-label').textContent=t('ficha.targetTime');
@@ -641,7 +641,11 @@ function mostrarPulsera(){
     const m=Math.floor((secs%3600)/60);
     const s=secs%60;
     const time=h>0?h+':'+pad(m)+':'+pad(s):pad(m)+':'+pad(s);
-    return '<div class="pulsera-row"><span class="pulsera-km">'+labels[i]+'</span><span class="pulsera-time">'+time+'</span></div>';
+    var rowStyle='';var timeStyle='';
+    if(km===1){rowStyle='background:rgba(26,158,92,0.15);';timeStyle='background:#1a9e5c;color:#fff;'}
+    else if(km===21.1){rowStyle='background:rgba(26,111,196,0.15);';timeStyle='background:#1a6fc4;color:#fff;'}
+    else if(km===42.195){rowStyle='background:rgba(192,57,43,0.18);';timeStyle='background:#c0392b;color:#fff;font-size:1rem;font-weight:900;'}
+    return '<div class="pulsera-row" style="'+rowStyle+'"><span class="pulsera-km">'+labels[i]+'</span><span class="pulsera-time" style="'+timeStyle+'">'+time+'</span></div>';
   }).join('');
   // Botón imprimir
   var wrap = document.querySelector('#modal-pulsera .pulsera-wrap');
@@ -653,6 +657,14 @@ function mostrarPulsera(){
   }
   printBtn.onclick = imprimirPulsera;
   printBtn.innerHTML = t('ficha.pulseraPrint');
+
+  // Título: nombre del corredor y dorsal
+  var tituloEl = document.getElementById('pulsera-titulo');
+  if(tituloEl){
+    var nombreT = document.getElementById('f-nombre').value.trim();
+    var dorsalT = document.getElementById('f-dorsal').value.trim();
+    tituloEl.textContent = nombreT ? (nombreT + (dorsalT ? '  #'+dorsalT : '')) : t('ficha.pulseraTitle');
+  }
 
   document.getElementById('modal-pulsera').classList.add('open');
 }
