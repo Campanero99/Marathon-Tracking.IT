@@ -293,6 +293,7 @@ function actualizarIdiomaInterfaz(){
   if(document.getElementById('ficha-carrera-label'))document.getElementById('ficha-carrera-label').textContent=t('ficha.race');
   if(document.getElementById('f-carrera'))document.getElementById('f-carrera').placeholder=t('ficha.racePlaceholder');
   if(document.getElementById('pulsera-titulo'))document.getElementById('pulsera-titulo').textContent=t('ficha.pulseraTitle');
+  var tb=document.getElementById('mapa-toggle-puntos');if(tb){tb.textContent='👁 '+t(tb.dataset.modo==='mios'?'mapa.verTodos':'mapa.verMios');}
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
   if(document.getElementById('ficha-marca-label'))document.getElementById('ficha-marca-label').textContent=t('ficha.targetTime');
   if(document.getElementById('ficha-ritmo-label'))document.getElementById('ficha-ritmo-label').textContent=t('ficha.pace');
