@@ -292,6 +292,7 @@ function actualizarIdiomaInterfaz(){
   if(document.getElementById('ficha-ciudad-desc'))document.getElementById('ficha-ciudad-desc').textContent=t('ficha.cityDesc');
   if(document.getElementById('ficha-carrera-label'))document.getElementById('ficha-carrera-label').textContent=t('ficha.race');
   if(document.getElementById('f-carrera'))document.getElementById('f-carrera').placeholder=t('ficha.racePlaceholder');
+  if(document.getElementById('pulsera-titulo'))document.getElementById('pulsera-titulo').textContent=t('ficha.pulseraTitle');
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
   if(document.getElementById('ficha-marca-label'))document.getElementById('ficha-marca-label').textContent=t('ficha.targetTime');
   if(document.getElementById('ficha-ritmo-label'))document.getElementById('ficha-ritmo-label').textContent=t('ficha.pace');
@@ -428,7 +429,7 @@ async function loadMapaCiudad(name){
   const btn=document.getElementById('mcbtn-'+name);if(btn)btn.classList.add('active');
   mapCiudadActual=name;
   const fc=document.getElementById('f-carrera');
-  if(fc){if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else if(idiomaActual==='en'){fc.value=name+' Marathon';}else{fc.value='Marathon '+name;}}
+  if(fc){if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else{fc.value=name+' Marathon';}}
   document.getElementById('mapa-titulo').textContent='🗺 Marathon '+name;
   document.getElementById('map-no-city').style.display='none';
   document.getElementById('map-legend').style.display='block';
@@ -477,7 +478,7 @@ function buildCityGrid() {
   g.innerHTML = html;
   if (ciudadSel) { const b = document.getElementById('cbtn-' + ciudadSel); if (b) b.classList.add('sel'); }
 }
-function selCiudad(name){ciudadSel=name;document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('sel'));const btn=document.getElementById('cbtn-'+name);if(btn)btn.classList.add('sel');const fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else if(idiomaActual==='en'){fc.value=name+' Marathon';}else{fc.value='Marathon '+name;}const info=INFO_CIUDADES[name];if(info&&info.puntos){pt=info.puntos.map(function(p){return{km:p.km,calle:p.calle};});}else{pt=[];}rPF();}
+function selCiudad(name){ciudadSel=name;document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('sel'));const btn=document.getElementById('cbtn-'+name);if(btn)btn.classList.add('sel');const fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else{fc.value=name+' Marathon';}const info=INFO_CIUDADES[name];if(info&&info.puntos){pt=info.puntos.map(function(p){return{km:p.km,calle:p.calle};});}else{pt=[];}rPF();}
 
 function rL(){const el=document.getElementById('lista-corredores');if(!C.length){el.innerHTML='<div style="text-align:center;padding:48px 20px;color:var(--text2);"><div style="font-size:3rem;margin-bottom:12px;">🏃</div><p>'+t('lista.noRunners')+'<br><b>'+t('lista.addRunner')+'</b></p></div>';return;}el.innerHTML=C.map((c,i)=>{const p=(c.pasos||[]).filter(x=>x.horaReal).length,tt=(c.pasos||[]).length;const b=p===0?'<span class="badge badge-yellow">'+t('lista.waiting')+'</span>':p>=tt?'<span class="badge badge-green">'+t('lista.finished')+'</span>':'<span class="badge badge-red">'+t('lista.running')+' · '+p+'/'+tt+'</span>';const flag=c.ciudad&&INFO_CIUDADES[c.ciudad]?INFO_CIUDADES[c.ciudad].flag+' ':'🏙️ ';return'<div class="runner-item"><div class="runner-avatar">'+c.nombre.charAt(0).toUpperCase()+'</div><div class="runner-info"><div class="runner-name">'+c.nombre+(c.dorsal?' <span style="color:var(--text2);font-size:.8rem;">#'+c.dorsal+'</span>':'')+'</div><div class="runner-sub">'+flag+(c.carrera||'—')+' · '+(c.marca||'—')+' · '+(c.ritmo||'—')+'/km</div><div style="margin-top:5px;">'+b+'</div></div><div class="runner-actions"><button class="btn btn-outline btn-sm" onclick="eC('+i+')">✏️ '+t('lista.edit')+'</button><button class="btn btn-primary btn-sm" onclick="aS('+i+')">📍 '+t('lista.follow')+'</button><button class="btn btn-outline btn-sm" onclick="verMapa('+i+')">'+t('lista.route')+'</button><button class="btn btn-danger btn-sm" onclick="bC('+i+')">🗑</button></div></div>';}).join('');}
 function verMapa(i){ca=i;showPage('mapa');if(C[i].ciudad){setTimeout(()=>loadMapaCiudad(C[i].ciudad),200);}}
