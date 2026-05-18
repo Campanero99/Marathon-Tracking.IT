@@ -383,8 +383,9 @@ function actualizarIdiomaInterfaz(){
   if(document.getElementById('ficha-ciudad-desc'))document.getElementById('ficha-ciudad-desc').textContent=t('ficha.cityDesc');
   if(document.getElementById('ficha-carrera-label'))document.getElementById('ficha-carrera-label').textContent=t('ficha.race');
   if(document.getElementById('f-carrera'))document.getElementById('f-carrera').placeholder=t('ficha.racePlaceholder');
-  if(ciudadSel&&document.getElementById('f-carrera')){var fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+ciudadSel;}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadSel;}else{fc.value=ciudadSel+' Marathon';}}
-  if(mapCiudadActual){document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+mapCiudadActual+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');}
+  if(ciudadSel&&document.getElementById('f-carrera')){var fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+ciudadNombre(ciudadSel);}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadNombre(ciudadSel);}else{fc.value=ciudadNombre(ciudadSel)+' Marathon';}}
+  if(mapCiudadActual){document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+ciudadNombre(mapCiudadActual)+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');}
+  buildCityGrid();rMCS();
   var ptEl=document.getElementById('pulsera-titulo');if(ptEl&&!document.getElementById('modal-pulsera').classList.contains('open'))ptEl.textContent=t('ficha.pulseraTitle');
   var tb=document.getElementById('mapa-toggle-puntos');if(tb){var modo=tb.getAttribute('data-modo');tb.textContent='👁 '+t(modo==='mios'?'mapa.verTodos':'mapa.verMios');}
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
@@ -467,6 +468,25 @@ const FECHAS_MARATONES = {
   "New York": "1 nov 2026",
   "Valencia": "6 dic 2026"
 };
+
+const CIUDADES_NOMBRES = {
+  "Barcelona": {de:"Barcelona", en:"Barcelona", es:"Barcelona", fr:"Barcelone"},
+  "Berlín":    {de:"Berlin",    en:"Berlin",    es:"Berlín",    fr:"Berlin"},
+  "Frankfurt": {de:"Frankfurt", en:"Frankfurt", es:"Frankfurt", fr:"Francfort"},
+  "London":    {de:"London",    en:"London",    es:"Londres",   fr:"Londres"},
+  "París":     {de:"Paris",     en:"Paris",     es:"París",     fr:"Paris"},
+  "Valencia":  {de:"Valencia",  en:"Valencia",  es:"Valencia",  fr:"Valence"},
+  "Rom":       {de:"Rom",       en:"Rome",      es:"Roma",      fr:"Rome"},
+  "Sevilla":   {de:"Sevilla",   en:"Seville",   es:"Sevilla",   fr:"Séville"},
+  "Hamburg":   {de:"Hamburg",   en:"Hamburg",   es:"Hamburgo",  fr:"Hambourg"},
+  "Tokyo":     {de:"Tokio",     en:"Tokyo",     es:"Tokio",     fr:"Tokyo"},
+  "Rotterdam": {de:"Rotterdam", en:"Rotterdam", es:"Rotterdam", fr:"Rotterdam"},
+  "New York":  {de:"New York",  en:"New York",  es:"Nueva York",fr:"New York"},
+  "Chicago":   {de:"Chicago",   en:"Chicago",   es:"Chicago",   fr:"Chicago"},
+  "Sídney":    {de:"Sydney",    en:"Sydney",    es:"Sídney",    fr:"Sydney"}
+};
+function ciudadNombre(key){ return (CIUDADES_NOMBRES[key]&&CIUDADES_NOMBRES[key][idiomaActual])||key; }
+
 const KM=42.195;
 function sv(){localStorage.setItem('mt_v5_de',JSON.stringify(C));}
 function pad(n){return String(Math.floor(Math.abs(n))).padStart(2,'0');}
@@ -499,7 +519,7 @@ function buildMapaCitySelector() {
   for (const nombre in INFO_CIUDADES) {
     const info = INFO_CIUDADES[nombre];
     const fecha = FECHAS_MARATONES[nombre] ? ' <small style="font-size:0.7rem;opacity:0.8">(' + FECHAS_MARATONES[nombre] + ')</small>' : '';
-    html += '<button class="mapa-city-btn" id="mcbtn-' + nombre + '" onclick="loadMapaCiudad(\'' + nombre + '\')">' + info.flag + ' ' + nombre + fecha + '</button>';
+    html += '<button class="mapa-city-btn" id="mcbtn-' + nombre + '" onclick="loadMapaCiudad(\'' + nombre + '\')">' + info.flag + ' ' + ciudadNombre(nombre) + fecha + '</button>';
   }
   g.innerHTML = html;
   if (ca !== null && C[ca] && C[ca].ciudad) { loadMapaCiudad(C[ca].ciudad); }
@@ -523,8 +543,8 @@ async function loadMapaCiudad(name){
   const btn=document.getElementById('mcbtn-'+name);if(btn)btn.classList.add('active');
   mapCiudadActual=name;
   const fc=document.getElementById('f-carrera');
-  if(fc){if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else{fc.value=name+' Marathon';}}
-  document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+name+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');
+  if(fc){if(idiomaActual==='es'){fc.value='Maratón de '+ciudadNombre(name);}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadNombre(name);}else{fc.value=ciudadNombre(name)+' Marathon';}}
+  document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+ciudadNombre(name)+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');
   document.getElementById('map-no-city').style.display='none';
   document.getElementById('map-legend').style.display='block';
   clearMapaLayers();
@@ -621,7 +641,7 @@ function buildCityGrid() {
   g.innerHTML = html;
   if (ciudadSel) { const b = document.getElementById('cbtn-' + ciudadSel); if (b) b.classList.add('sel'); }
 }
-function selCiudad(name){ciudadSel=name;document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('sel'));const btn=document.getElementById('cbtn-'+name);if(btn)btn.classList.add('sel');const fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else{fc.value=name+' Marathon';}const info=INFO_CIUDADES[name];if(info&&info.puntos){pt=info.puntos.map(function(p){return{km:p.km,calle:p.calle};});}else{pt=[];}rPF();}
+function selCiudad(name){ciudadSel=name;document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('sel'));const btn=document.getElementById('cbtn-'+name);if(btn)btn.classList.add('sel');const fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+ciudadNombre(name);}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadNombre(name);}else{fc.value=ciudadNombre(name)+' Marathon';}const info=INFO_CIUDADES[name];if(info&&info.puntos){pt=info.puntos.map(function(p){return{km:p.km,calle:p.calle};});}else{pt=[];}rPF();}
 
 function rL(){const el=document.getElementById('lista-corredores');if(!C.length){el.innerHTML='<div style="text-align:center;padding:48px 20px;color:var(--text2);"><div style="font-size:3rem;margin-bottom:12px;">🏃</div><p>'+t('lista.noRunners')+'<br><b>'+t('lista.addRunner')+'</b></p></div>';return;}el.innerHTML=C.map((c,i)=>{const p=(c.pasos||[]).filter(x=>x.horaReal).length,tt=(c.pasos||[]).length;const b=p===0?'<span class="badge badge-yellow">'+t('lista.waiting')+'</span>':p>=tt?'<span class="badge badge-green">'+t('lista.finished')+'</span>':'<span class="badge badge-red">'+t('lista.running')+' · '+p+'/'+tt+'</span>';const flag=c.ciudad&&INFO_CIUDADES[c.ciudad]?INFO_CIUDADES[c.ciudad].flag+' ':'🏙️ ';return'<div class="runner-item"><div class="runner-avatar">'+c.nombre.charAt(0).toUpperCase()+'</div><div class="runner-info"><div class="runner-name">'+c.nombre+(c.dorsal?' <span style="color:var(--text2);font-size:.8rem;">#'+c.dorsal+'</span>':'')+'</div><div class="runner-sub">'+flag+(c.carrera||'—')+' · '+(c.marca||'—')+' · '+(c.ritmo||'—')+'/km</div><div style="margin-top:5px;">'+b+'</div></div><div class="runner-actions"><button class="btn btn-outline btn-sm" onclick="eC('+i+')">✏️ '+t('lista.edit')+'</button><button class="btn btn-primary btn-sm" onclick="aS('+i+')">📍 '+t('lista.follow')+'</button><button class="btn btn-outline btn-sm" onclick="verMapa('+i+')">'+t('lista.route')+'</button><button class="btn btn-danger btn-sm" onclick="bC('+i+')">🗑</button></div></div>';}).join('');}
 function verMapa(i){ca=i;showPage('mapa');if(C[i].ciudad){setTimeout(()=>loadMapaCiudad(C[i].ciudad),200);}}
