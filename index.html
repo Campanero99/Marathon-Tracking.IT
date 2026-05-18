@@ -384,6 +384,7 @@ function actualizarIdiomaInterfaz(){
   if(document.getElementById('ficha-carrera-label'))document.getElementById('ficha-carrera-label').textContent=t('ficha.race');
   if(document.getElementById('f-carrera'))document.getElementById('f-carrera').placeholder=t('ficha.racePlaceholder');
   if(ciudadSel&&document.getElementById('f-carrera')){var fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+ciudadSel;}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadSel;}else{fc.value=ciudadSel+' Marathon';}}
+  if(mapCiudadActual){document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+mapCiudadActual+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');}
   var ptEl=document.getElementById('pulsera-titulo');if(ptEl&&!document.getElementById('modal-pulsera').classList.contains('open'))ptEl.textContent=t('ficha.pulseraTitle');
   var tb=document.getElementById('mapa-toggle-puntos');if(tb){var modo=tb.getAttribute('data-modo');tb.textContent='👁 '+t(modo==='mios'?'mapa.verTodos':'mapa.verMios');}
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
@@ -523,7 +524,7 @@ async function loadMapaCiudad(name){
   mapCiudadActual=name;
   const fc=document.getElementById('f-carrera');
   if(fc){if(idiomaActual==='es'){fc.value='Maratón de '+name;}else if(idiomaActual==='fr'){fc.value='Marathon de '+name;}else{fc.value=name+' Marathon';}}
-  document.getElementById('mapa-titulo').textContent='🗺 Marathon '+name;
+  document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+name+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');
   document.getElementById('map-no-city').style.display='none';
   document.getElementById('map-legend').style.display='block';
   clearMapaLayers();
