@@ -636,7 +636,7 @@ function buildCityGrid() {
   for (const nombre in INFO_CIUDADES) {
     const info = INFO_CIUDADES[nombre];
     const fecha = FECHAS_MARATONES[nombre] ? ' <small style="font-size:0.65rem;opacity:0.8">(' + FECHAS_MARATONES[nombre] + ')</small>' : '';
-    html += '<div class="city-btn" id="cbtn-' + nombre + '" onclick="selCiudad(\'' + nombre + '\')"><span class="city-flag">' + info.flag + '</span>' + nombre + fecha + '</div>';
+    html += '<div class="city-btn" id="cbtn-' + nombre + '" onclick="selCiudad(\'' + nombre + '\')"><span class="city-flag">' + info.flag + '</span>' + ciudadNombre(nombre) + fecha + '</div>';
   }
   g.innerHTML = html;
   if (ciudadSel) { const b = document.getElementById('cbtn-' + ciudadSel); if (b) b.classList.add('sel'); }
