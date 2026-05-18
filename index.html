@@ -89,7 +89,7 @@
   #modal-pulsera{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:99999;display:none;align-items:center;justify-content:center;padding:12px}
   #modal-pulsera.open{display:flex}
   .pulsera-wrap{background:#fff;border-radius:16px;padding:16px 14px;max-width:270px;width:88%;box-shadow:0 8px 40px rgba(0,0,0,.3);position:relative}
-  .pulsera-close{position:absolute;top:18px;right:14px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2)}
+  .pulsera-close{position:absolute;top:-14px;right:-10px;background:#fff;border:none;font-size:1rem;cursor:pointer;color:#333;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
 
   .pulsera-body{background:linear-gradient(180deg,#87CEEB,#b0e0f7);border-radius:10px;padding:8px 0;display:flex;flex-direction:column;gap:0}
   .pulsera-row{display:flex;justify-content:space-between;align-items:center;padding:4px 14px;border-bottom:1px solid rgba(255,255,255,.4)}
@@ -732,31 +732,23 @@ function mostrarPulsera(){
   
   const body=document.getElementById('pulsera-body');
   let html = '';
-  html += '<div style="text-align:center;margin-bottom:6px;">';
-  if(nombre) html += '<div style="font-size:0.85rem;font-weight:800;color:#d4af37;text-transform:uppercase;">'+nombre.toUpperCase()+'</div>';
-  if(dorsal) html += '<div style="font-size:0.65rem;color:#aaa;">#'+dorsal+'</div>';
-  html += '<div style="font-size:0.6rem;color:#888;margin-top:8px;">⚡ RITMO OBJETIVO</div>';
-  html += '<div style="font-size:1.3rem;font-weight:800;color:#d4af37;">'+fm(ritmo)+'/km</div>';
-  html += '</div>';
-  
+
   for(var i=0;i<KMS.length;i++){
     var km=KMS[i];
-    var secs=Math.round(ritmo*km);
+    var secs=(km===21.1)?Math.round(ms/2):Math.round(ritmo*km);
     var h=Math.floor(secs/3600);
     var m=Math.floor((secs%3600)/60);
     var s=secs%60;
     var timeDisplay = (h>0) ? h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0') : String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
     var icono = (i===4) ? ' 🏃' : ((i===9) ? ' 🏁' : '');
-    html += '<div style="display:flex;justify-content:space-between;padding:9px 12px 5px 12px;border-bottom:1px solid rgba(212,175,55,0.25);">';
-    html += '<span style="font-size:0.85rem;font-weight:700;color:#e8d5a8;">⏱ '+labels[i]+icono+'</span>';
-    var bgExtra = (i===0) ? 'background:#d4af37;color:#1a1a2e;' : ((i===4) ? 'background:#ffd966;color:#1a1a2e;' : ((i===9) ? 'background:#c0392b;color:white;' : 'background:rgba(0,0,0,0.55);color:#f5f5f5;'));
-    html += '<span style="font-size:1rem;font-weight:800;padding:3px 10px;border-radius:30px;'+bgExtra+'">'+timeDisplay+'</span>';
+    var rowBg = (i===0||i===4) ? 'background:rgba(26,74,122,0.15);' : (i===9 ? 'background:rgba(192,57,43,0.12);' : '');
+    var timeBg = (i===0) ? 'background:#1a6fc4;color:#fff;' : (i===4 ? 'background:#1a4a7a;color:#fff;' : (i===9 ? 'background:#c0392b;color:#fff;' : 'background:rgba(26,74,122,0.15);color:#1a2740;'));
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 12px;border-bottom:1px solid rgba(100,160,220,0.3);'+rowBg+'">';
+    html += '<span style="font-size:0.75rem;font-weight:700;color:#1a4a7a;min-width:50px;padding-top:2px;">⏱ '+labels[i]+icono+'</span>';
+    html += '<span style="font-size:0.82rem;font-weight:800;padding:2px 8px;border-radius:20px;'+timeBg+'">'+timeDisplay+'</span>';
     html += '</div>';
   }
-  
-  html += '<div style="margin-top:5px;text-align:center;"><div style="height:2px;background:linear-gradient(90deg, transparent, #d4af37, #d4af37, #d4af37, transparent);width:70%;margin:0 auto;"></div>';
-  html += '<div style="font-size:0.55rem;color:#d4af37;margin-top:6px;letter-spacing:2px;">✦ PACE BAND ✦</div></div>';
-  
+
   body.innerHTML = html;
   
   var wrap = document.querySelector('#modal-pulsera .pulsera-wrap');
