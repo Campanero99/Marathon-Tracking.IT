@@ -86,16 +86,16 @@
   .marca-lbl{font-size:.7rem;color:var(--text2);text-align:center;margin-top:2px}
   .sep{height:1px;background:var(--border);margin:16px 0}
   /* Modal pulsera */
-  #modal-pulsera{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:99999;display:none;align-items:center;justify-content:center;padding:20px}
+  #modal-pulsera{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:99999;display:none;align-items:center;justify-content:center;padding:12px}
   #modal-pulsera.open{display:flex}
-  .pulsera-wrap{background:#fff;border-radius:20px;padding:24px 20px;max-width:320px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.3);position:relative}
-  .pulsera-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text2)}
-  .pulsera-title{font-size:.85rem;font-weight:800;color:var(--text2);text-align:center;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
-  .pulsera-body{background:linear-gradient(180deg,#87CEEB,#b0e0f7);border-radius:12px;padding:12px 0;display:flex;flex-direction:column;gap:0}
-  .pulsera-row{display:flex;justify-content:space-between;align-items:center;padding:6px 20px;border-bottom:1px solid rgba(255,255,255,.4)}
+  .pulsera-wrap{background:#fff;border-radius:16px;padding:16px 14px;max-width:270px;width:88%;box-shadow:0 8px 40px rgba(0,0,0,.3);position:relative}
+  .pulsera-close{position:absolute;top:18px;right:14px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2)}
+
+  .pulsera-body{background:linear-gradient(180deg,#87CEEB,#b0e0f7);border-radius:10px;padding:8px 0;display:flex;flex-direction:column;gap:0}
+  .pulsera-row{display:flex;justify-content:space-between;align-items:center;padding:4px 14px;border-bottom:1px solid rgba(255,255,255,.4)}
   .pulsera-row:last-child{border-bottom:none}
-  .pulsera-km{font-size:.8rem;font-weight:700;color:#1a4a7a;min-width:55px}
-  .pulsera-time{font-size:.95rem;font-weight:800;color:#1a2740;font-variant-numeric:tabular-nums}
+  .pulsera-km{font-size:.75rem;font-weight:700;color:#1a4a7a;min-width:50px}
+  .pulsera-time{font-size:.85rem;font-weight:800;color:#1a2740;font-variant-numeric:tabular-nums}
   h2{font-size:1.15rem;font-weight:800;margin-bottom:4px;color:var(--text)}
   .text2{color:var(--text2);font-size:.85rem}
   .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
@@ -342,7 +342,6 @@
 
 <div id="modal-pulsera" onclick="if(event.target===this)cerrarPulsera()">
   <div class="pulsera-wrap">
-    <div class="pulsera-title" id="pulsera-titulo">Pulsera de ritmos</div>
     <button class="pulsera-close" onclick="cerrarPulsera()">✕</button>
     <div class="pulsera-body" id="pulsera-body"></div>
   </div>
@@ -386,7 +385,6 @@ function actualizarIdiomaInterfaz(){
   if(ciudadSel&&document.getElementById('f-carrera')){var fc=document.getElementById('f-carrera');if(idiomaActual==='es'){fc.value='Maratón de '+ciudadNombre(ciudadSel);}else if(idiomaActual==='fr'){fc.value='Marathon de '+ciudadNombre(ciudadSel);}else{fc.value=ciudadNombre(ciudadSel)+' Marathon';}}
   if(mapCiudadActual){document.getElementById('mapa-titulo').textContent='🗺 '+(idiomaActual==='es'?'Maratón de ':idiomaActual==='fr'?'Marathon de ':'')+ciudadNombre(mapCiudadActual)+(idiomaActual!=='es'&&idiomaActual!=='fr'?' Marathon':'');}
   buildCityGrid();if(document.getElementById("mapa-city-selector"))buildMapaCitySelector();
-  var ptEl=document.getElementById('pulsera-titulo');if(ptEl&&!document.getElementById('modal-pulsera').classList.contains('open'))ptEl.textContent=t('ficha.pulseraTitle');
   var tb=document.getElementById('mapa-toggle-puntos');if(tb){var modo=tb.getAttribute('data-modo');tb.textContent='👁 '+t(modo==='mios'?'mapa.verTodos':'mapa.verMios');}
   if(document.getElementById('ficha-tiempo'))document.getElementById('ficha-tiempo').textContent=t('ficha.targetTitle');
   if(document.getElementById('ficha-marca-label'))document.getElementById('ficha-marca-label').textContent=t('ficha.targetTime');
@@ -772,8 +770,6 @@ function mostrarPulsera(){
   }
   printBtn.innerHTML = t('ficha.pulseraPrint');
   
-  var tituloEl=document.getElementById('pulsera-titulo');
-  if(tituloEl){var nombreT=document.getElementById('f-nombre').value.trim();var dorsalT=document.getElementById('f-dorsal').value.trim();tituloEl.textContent=nombreT?(nombreT+(dorsalT?'  #'+dorsalT:'')):t('ficha.pulseraTitle');}
   document.getElementById('modal-pulsera').classList.add('open');
 }
 function ocultarAviso(){hayaCambios=false;}
